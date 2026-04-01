@@ -1108,9 +1108,6 @@ C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\ne
 C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\compressed\utlzradhtu-{0}-tptq2av103-tptq2av103.gz
 C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\compressed\090y2mbvp9-{0}-lfu7j35m59-lfu7j35m59.gz
 C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\compressed\7b1q2kpu8b-{0}-oyz0vx2fzb-oyz0vx2fzb.gz
-C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\compressed\nnpu7cljz3-{0}-zr7az58hxx-zr7az58hxx.gz
-C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\compressed\5873mpzmqw-{0}-7hu8lv3wxz-7hu8lv3wxz.gz
-C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\compressed\hxvaf5limz-{0}-z41hjywcpa-z41hjywcpa.gz
 C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\staticwebassets.build.json
 C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\staticwebassets.build.json.cache
 C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\staticwebassets.development.json
@@ -1121,3 +1118,7 @@ C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\ne
 C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\refint\WeddingRSVP.dll
 C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\WeddingRSVP.pdb
 C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\ref\WeddingRSVP.dll
+C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\WeddingRSVP.sourcelink.json
+C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\compressed\nnpu7cljz3-{0}-m6c9y386f3-m6c9y386f3.gz
+C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\compressed\5873mpzmqw-{0}-9wtxmxtsj0-9wtxmxtsj0.gz
+C:\Users\Tyler Schaafsma\OneDrive\Desktop\WeddingRSVP\WeddingRSVP\obj\Release\net8.0\compressed\hxvaf5limz-{0}-t6twunzofh-t6twunzofh.gz
