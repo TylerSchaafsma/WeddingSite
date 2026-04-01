@@ -1,0 +1,61 @@
+﻿@page "/"
+@inject GuestService GuestService
+@inject NavigationManager Navigation
+
+<div class="background-div">
+
+	<div class="main-card">
+
+		<div class="main-card-border">
+
+			<div class="main-content">
+
+				<label style="font-size: 3rem; color: #9E9D63;">RSVP</label>
+
+				<div class="splitter"></div>
+
+				<input type="text" class="search-input" style="margin-bottom: 10px; width: 300px; border: 2px solid var(--primary-green); border-radius: 5px; color: var(--primary-green); padding: 3px;" placeholder="Enter your name..." @bind-value="searchedName" @bind-value:event="oninput" />
+
+				@if (SearchedGuests.Count > 0)
+				{
+					<div class="results-div">
+
+						@foreach (var guest in SearchedGuests)
+						{
+							<button @onclick="() => ViewGuest(guest)" class="results-button">@guest.Name</button>
+						}
+
+					</div>
+				}
+				else if (!string.IsNullOrWhiteSpace(searchedName))
+				{
+					<p>There are no guests by the name of '@searchedName'</p>
+				}
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+@code {
+	List<Guest> GuestList = new List<Guest>();
+	List<Guest> SearchedGuests => !string.IsNullOrWhiteSpace(searchedName) ? GuestList.Where(g => !string.IsNullOrWhiteSpace(g.Name) &&
+																								g.Name.Contains(searchedName, StringComparison.OrdinalIgnoreCase))
+																							.ToList() ?? []
+																					: [];
+
+	string searchedName = string.Empty;
+
+	protected override async Task OnInitializedAsync()
+	{
+		GuestList = await GuestService.GetAllGuests();
+	}
+
+	private void ViewGuest(Guest guest)
+	{
+		Navigation.NavigateTo($"/guests/{guest.ID}");
+	}
+}

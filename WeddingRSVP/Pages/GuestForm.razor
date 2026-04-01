@@ -1,0 +1,196 @@
+﻿@page "/guests/{GuestID:guid}"
+@inject GuestService GuestService
+@inject NavigationManager Navigation
+
+<div class="background-div">
+
+	<div class="main-card">
+
+		<div class="main-card-border">
+
+			@if (loading)
+			{
+				<div class="main-content">
+
+					@if (updateSuccessful)
+					{
+						<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 15px;">
+							<h1 style="color: var(--primary-green)">Thank you!</h1>
+							<button @onclick="GoBack" class="theme-button">Back</button>
+						</div>
+					}
+					else
+					{
+						<label style="font-size: 3rem; color: #9E9D63;">@SelectedGuest.Name</label>
+
+						<div class="splitter"></div>
+
+						<div class="edit-section">
+
+							<label>Will you be attending?</label>
+							@if (attendingError)
+							{
+								<label style="color: #500307">* Please select an option below</label>
+							}
+							<div class="attending-buttons">
+								<button @onclick="() => SetAttending(true)" class="rsvp-button @(SelectedGuest.Attending == true ? "selected" : "")">I will be attending</button>
+								<button @onclick="() => SetAttending(false)" class="rsvp-button @(SelectedGuest.Attending == false ? "selected" : "")">I will NOT be attending</button>
+							</div>
+
+							@if (SelectedGuest.Attending == true && SelectedGuest.PlusOneAllowed)
+							{
+								<label>Will you be bringing a plus one?
+								</label>
+								if (plusOneError)
+								{
+									<label style="color: #500307">* Please select an option below</label>
+								}
+								<div class="attending-buttons">
+									<button @onclick="() => SetPlusOne(true)" class="rsvp-button @(bringingPlusOne == true ? "selected" : "")">Yes</button>
+									<button @onclick="() => SetPlusOne(false)" class="rsvp-button @(bringingPlusOne == false ? "selected" : "")">No</button>
+								</div>
+
+								@if (bringingPlusOne == true)
+								{
+									if (plusOneNameError)
+									{
+										<label style="color: #500307">* Please enter the name of your plus one</label>
+									}
+									<input type="text" style="width: 300px; border: 2px solid var(--primary-green); border-radius: 5px; color: var(--primary-green); padding: 3px;" placeholder="Plus one name..." @bind-value="SelectedGuest.PlusOneName" />
+								}
+							}
+
+							@if (SelectedGuest.Attending == true && othersInGroup)
+							{
+								<label>Would you like to RSVP for anyone else in your group?</label>
+
+								<div class="attending-buttons">
+									@foreach (var guest in GuestList.Where(g => g.GroupID == SelectedGuest.GroupID))
+									{
+										<button @onclick="() => SetGuestAttendance(guest)" class="rsvp-button @(guest.Attending == true ? "selected" : "")">@guest.Name</button>
+									}
+								</div>
+							}
+
+							<div style="margin-top: 10px;">
+								<button @onclick="GoBack" class="theme-button">Back</button>
+								<button @onclick="UpdateGuest" class="theme-button">Submit</button>
+							</div>
+
+						</div>
+					}
+
+				</div>
+			}
+
+		</div>
+
+	</div>
+
+</div>
+
+@code {
+	[Parameter]
+	public Guid GuestID { get; set; }
+
+	private Guest SelectedGuest = new Guest();
+	private List<Guest> GuestList = new List<Guest>();
+	private Dictionary<Guid, Guest> GuestDict = new Dictionary<Guid, Guest>();
+
+	private bool? bringingPlusOne;
+
+	private bool loading = false;
+
+	private bool othersInGroup = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		SelectedGuest = await GuestService.GetGuest(GuestID);
+		GuestList = await GuestService.GetAllGuests();
+
+		if (SelectedGuest.Attending.HasValue)
+		{
+			bringingPlusOne = !string.IsNullOrWhiteSpace(SelectedGuest.PlusOneName);
+		}
+
+		othersInGroup = GuestList.Any(g => g.GroupID == SelectedGuest.GroupID && g.ID != SelectedGuest.ID && g.Attending != true);
+
+		loading = true;
+	}
+
+	private void SetGuestAttendance(Guest guest)
+	{
+		if (guest.Attending != true)
+		{
+			guest.Attending = true;
+			GuestDict[guest.ID] = guest;
+		}
+		else
+		{
+			guest.Attending = null;
+			GuestDict.Remove(guest.ID);
+		}
+	}
+
+	private void SetAttending(bool value)
+	{
+		SelectedGuest.Attending = value;
+		if (!value) SelectedGuest.PlusOneName = null;
+	}
+
+	private void SetPlusOne(bool value)
+	{
+		bringingPlusOne = value;
+		if (!value) SelectedGuest.PlusOneName = null;
+	}
+
+	private bool updateSuccessful = false;
+
+	private bool attendingError = false;
+	private bool plusOneError = false;
+	private bool plusOneNameError = false;
+
+	private async Task UpdateGuest()
+	{
+		attendingError = false;
+		plusOneError = false;
+		plusOneNameError = false;
+
+		if (SelectedGuest.Attending == null) 
+		{
+			attendingError = true;
+		}
+
+		if (SelectedGuest.Attending == true && SelectedGuest.PlusOneAllowed)
+		{
+			if (bringingPlusOne == null)
+			{
+				plusOneError = true;
+			}
+
+			if (bringingPlusOne == true && string.IsNullOrWhiteSpace(SelectedGuest.PlusOneName))
+			{
+				plusOneNameError = true;
+			}
+		}
+
+		if (attendingError || plusOneError || plusOneNameError)
+		{
+			return;
+		}
+
+		await GuestService.UpdateGuest(SelectedGuest!);
+
+		foreach (var guest in GuestDict.Values)
+		{
+			await GuestService.UpdateGuest(guest);
+		}
+
+		updateSuccessful = true;
+	}
+
+	private void GoBack()
+	{
+		Navigation.NavigateTo("/");
+	}
+}
